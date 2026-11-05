@@ -320,6 +320,9 @@ impl Options {
     pub fn tensor_bytes(&self) -> f64 {
         self.size_mib * 1024.0 * 1024.0
     }
+    pub fn size_description(&self) -> String {
+        format!("{} MiB nominal tensor size", self.size_mib)
+    }
 }
 
 /// A comma-separated flag value, dropping empty entries so a trailing comma is

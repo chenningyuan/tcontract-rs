@@ -72,9 +72,9 @@ pub fn run(opts: &Options, exec: &mut Exec<'_>) -> ExitCode {
     });
 
     println!(
-        "running {} cases at {} MiB nominal tensor size, {} reps, {} ms priming, stress={}\n",
+        "running {} cases at {}, {} reps, {} ms priming, stress={}\n",
         cases.len(),
-        opts.size_mib,
+        opts.size_description(),
         opts.reps,
         opts.prime_ms,
         opts.stress.name()

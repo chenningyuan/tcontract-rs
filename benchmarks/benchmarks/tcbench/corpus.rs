@@ -397,8 +397,13 @@ impl Stress {
     }
 }
 
+/// The small all-ones contraction used by the shared verifier. It is not a
+/// corpus cell, so its 256-byte sizing target does not affect corpus extents.
+pub fn known_value_case() -> Sized {
+    size_case(&corpus()[0], 256.0)
+}
+
 /// Apply the TCCG sizing rule, unperturbed.
-#[allow(dead_code)]
 pub fn size_case(case: &Case, tensor_bytes: f64) -> Sized {
     size_case_stressed(case, tensor_bytes, Stress::None)
 }

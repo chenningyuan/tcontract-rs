@@ -71,6 +71,10 @@ name = "tcbench"
 path = "benchmarks/tcbench/main.rs"
 
 [[bin]]
+name = "qcbench"
+path = "benchmarks/qcbench/main.rs"
+
+[[bin]]
 name = "lukbench"
 path = "benchmarks/lukbench/main.rs"
 

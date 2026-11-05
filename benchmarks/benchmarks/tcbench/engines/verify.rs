@@ -51,20 +51,25 @@ pub fn run(opts: &Options, exec: &mut Exec<'_>) -> ExitCode {
     // Small enough that every case is quick, large enough to span several
     // cache blocks in at least one dimension.
     println!(
-        "\nverifying {} cases at {} MiB nominal size\n",
+        "\nverifying {} cases at {}\n",
         cases.len(),
-        opts.size_mib
+        opts.size_description()
     );
 
     let mut t = Table::new(&[
         "case", "dtype", "m", "n", "k", "plan", "packed", "vs ttgt", "vs tblis", "status",
     ]);
     let mut failures = 0usize;
-    // Known-value GEMM: A=B=1 implies every D element is exactly K. Not a corpus
-    // cell, so it is not in the census.
-    let known = corpus::size_case(&corpus::corpus()[0], 256.0);
-    failures += check::<f64>(&known, exec, &mut t, true, None, &[]);
-    failures += check::<Complex<f64>>(&known, exec, &mut t, true, None, &[]);
+    // Known-value contraction: A=B=1 implies every D element is exactly K.
+    // Each corpus supplies a small dedicated case; it is not a census cell.
+    // Respect the selected dtypes instead of always running f64 and c64.
+    let known = corpus::known_value_case();
+    if opts.wants("f64") {
+        failures += check::<f64>(&known, exec, &mut t, true, None, &[]);
+    }
+    if opts.wants("c64") {
+        failures += check::<Complex<f64>>(&known, exec, &mut t, true, None, &[]);
+    }
 
     for case in &cases {
         let s = corpus::size_case_stressed(case, opts.tensor_bytes(), opts.stress);
